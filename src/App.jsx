@@ -6,9 +6,11 @@ function TimerControl({type, label }) {
   return (    
       <div className="timer-control">
         <h3 id={`${type}-label`}>{label}</h3>
-        <button className="plus-minus"> - </button>
-        <span> 05 </span>
-        <button className="plus-minus"> + </button>
+        <div className="plus-minus">
+          <button> - </button>
+          <span> 05 </span>
+          <button> + </button>
+        </div>
       </div>
   )
 }

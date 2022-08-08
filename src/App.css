@@ -59,7 +59,7 @@ h2, h3 {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
-  padding: 0rem 1rem;
+  padding: 0rem .5rem;
 }
 
 .pomodoro {
@@ -86,7 +86,14 @@ h2, h3 {
   padding: 1rem 2rem;
 }
 
-.plus-minus {
+.timer-control {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.plus-minus button {
   height: 25px;
   width: 25px;
   background-color: #19323C;
