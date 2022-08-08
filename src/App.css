@@ -25,12 +25,14 @@ a:hover, a:active {
 }
 
 h2, h3 {
-  margin: 12px;
+  margin: 10px;
 }
 
 .App  {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 100%;
   padding: 2rem;
 }
@@ -56,6 +58,8 @@ h2, h3 {
 .control {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0rem 1rem;
 }
 
 .pomodoro {
@@ -72,11 +76,14 @@ h2, h3 {
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  border: solid;
+  border-width: 0px 3px 3px 3px;
 }
 
 .clock-layout {
-  font-size: 4rem;
+  font-size: 5rem;
   font-weight: 600;
+  padding: 1rem 2rem;
 }
 
 footer {

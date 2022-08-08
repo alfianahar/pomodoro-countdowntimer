@@ -6,7 +6,7 @@ function TimerControl() {
   return (    
       <div className="timer-control">
         <h3>Break</h3>
-        <button> - </button>
+        <button className=""> - </button>
         <span> 05 </span>
         <button> + </button>
       </div>
@@ -35,20 +35,24 @@ function Clock ({minutes, seconds}) {
   useEffect(() => {
 
   }, [])
-  
+
   return (
     <div className="clock">
       <h2>Session</h2>
       <div className="clock-layout">{mins} : {secs}</div>
+      <div>
+        <button>Play</button>
+        <button>Reset</button>
+      </div>
     </div>
   )
 }
 
-function Pomodoro({min, sec}) {
+function Pomodoro({minutes, seconds}) {
   return (
     <div className="pomodoro">
       <PomoSetting />
-      <Clock minutes={min} seconds={sec}/>
+      <Clock minutes={minutes} seconds={seconds}/>
     </div>
   )
 }
@@ -61,7 +65,7 @@ function App() {
   return (
     <div className="App">
       <h1>Pomodoro Timer</h1>
-      <Pomodoro min={minutes} sec={seconds} />
+      <Pomodoro minutes={minutes} seconds={seconds} />
 
       <footer className="credit">
         <p className="">
