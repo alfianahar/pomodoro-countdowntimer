@@ -30,13 +30,27 @@ function PomoSetting () {
   )
 }
 
-function Clock ({minutes, seconds}) {
+function Clock ({minutes, setMinutes, seconds, setSeconds}) {
   const mins = minutes < 10 ? `0${minutes}` : minutes;
   const secs = seconds < 10 ? `0${seconds}` : seconds;
 
   useEffect(() => {
+    let interval = setInterval(() => {
+      clearInterval(interval);
 
-  }, [])
+      if (seconds === 0) {
+        if (minutes !== 0) {
+          setSeconds(59)
+          setMinutes(minutes - 1)
+        } else {
+
+        }
+      } else {
+        setSeconds(seconds - 1)
+      }
+
+    }, 1000)
+  }, [seconds])
 
   return (
     <div className="clock">
@@ -50,11 +64,11 @@ function Clock ({minutes, seconds}) {
   )
 }
 
-function Pomodoro({minutes, seconds}) {
+function Pomodoro({minutes, setMinutes, seconds, setSeconds}) {
   return (
     <div className="pomodoro">
       <PomoSetting />
-      <Clock minutes={minutes} seconds={seconds}/>
+      <Clock minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds}/>
     </div>
   )
 }
@@ -67,7 +81,7 @@ function App() {
   return (
     <div className="App">
       <h1>Pomodoro Timer</h1>
-      <Pomodoro minutes={minutes} seconds={seconds} />
+      <Pomodoro minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds} />
 
       <footer className="credit">
         <p className="">
