@@ -2,6 +2,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -12,4 +13,18 @@ body {
   align-items: center;
   background-color: #F2545B;
   color: #19323C;
+}
+
+a:link, a:visited {
+  color: honeydew;
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  font-weight: 700;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
 }
