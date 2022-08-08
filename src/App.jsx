@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import settingicon from './assets/cog-outline.png'
 import './App.css'
 
-function TimerControl() {
+function TimerControl({type, label }) {
   return (    
       <div className="timer-control">
-        <h3>Break</h3>
-        <button className=""> - </button>
+        <h3 id={`${type}-label`}>{label}</h3>
+        <button className="plus-minus"> - </button>
         <span> 05 </span>
-        <button> + </button>
+        <button className="plus-minus"> + </button>
       </div>
   )
 }
@@ -21,8 +21,8 @@ function PomoSetting () {
         <span>Settings</span>
       </div>
       <div className="control">
-        <TimerControl />
-        <TimerControl />
+        <TimerControl type="break" label="Break Length" />
+        <TimerControl type="session" label="Session Length" />
       </div>
     </div>
   )
