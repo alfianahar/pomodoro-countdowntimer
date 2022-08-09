@@ -30,7 +30,7 @@ function PomoSetting () {
   )
 }
 
-function Clock ({minutes, setMinutes, seconds, setSeconds}) {
+function Clock ({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionTime, setSessionTime, breakTime, setBreakTime}) {
   const mins = minutes < 10 ? `0${minutes}` : minutes;
   const secs = seconds < 10 ? `0${seconds}` : seconds;
 
@@ -43,7 +43,12 @@ function Clock ({minutes, setMinutes, seconds, setSeconds}) {
           setSeconds(59)
           setMinutes(minutes - 1)
         } else {
+          let minutes = now ? sessionTime - 1 : breakTime - 1;
+          let seconds = 59;
 
+          setSeconds(seconds);
+          setMinutes(minutes);
+          setNow(!now);
         }
       } else {
         setSeconds(seconds - 1)
@@ -54,7 +59,7 @@ function Clock ({minutes, setMinutes, seconds, setSeconds}) {
 
   return (
     <div className="clock">
-      <h2>Session</h2>
+      <h2>{now ? 'Break time' : 'Focus Session'}</h2>
       <div className="clock-layout">{mins} : {secs}</div>
       <div>
         <button>Play</button>
@@ -64,24 +69,28 @@ function Clock ({minutes, setMinutes, seconds, setSeconds}) {
   )
 }
 
-function Pomodoro({minutes, setMinutes, seconds, setSeconds}) {
+function Pomodoro({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionTime, setSessionTime, breakTime, setBreakTime}) {
   return (
     <div className="pomodoro">
       <PomoSetting />
-      <Clock minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds}/>
+      <Clock minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds} now={now} setNow={setNow} sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime}/>
     </div>
   )
 }
 
 
 function App() {
-  const [minutes, setMinutes] = useState(25)
-  const [seconds, setSeconds] = useState(0)
+  const [minutes, setMinutes] = useState(0)
+  const [seconds, setSeconds] = useState(2)
+  const [now, setNow] = useState(false)
+  const [sessionTime, setSessionTime] = useState(25)
+  const [breakTime, setBreakTime] = useState(5)
+
 
   return (
     <div className="App">
       <h1>Pomodoro Timer</h1>
-      <Pomodoro minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds} />
+      <Pomodoro minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds} now={now} setNow={setNow} sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime} />
 
       <footer className="credit">
         <p className="">
