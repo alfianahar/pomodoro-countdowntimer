@@ -78,6 +78,19 @@ h2, h3 {
   padding: 1rem;
   border: solid;
   border-width: 0px 3px 3px 3px;
+  border-radius: 0  0 0.375rem 0.375rem;
+}
+
+.clock-break {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border: solid;
+  border-width: 0px 3px 3px 3px;
+  border-radius: 0  0 0.375rem 0.375rem;
+  background-color: aquamarine;
 }
 
 .clock-layout {
@@ -99,10 +112,25 @@ h2, h3 {
   background-color: #19323C;
   color: antiquewhite;
   font-weight: 600;
-  margin: 0 .25rem;
+  margin: 0 1rem;
   border-radius: 50%;
   display: inline-block;
   cursor: pointer;
+}
+
+.start-stop {
+  display: flex;
+}
+
+.start-stop button {
+  background-color: #19323C;
+  color: antiquewhite;
+  font-weight: 600;
+  font-size: .9rem;
+  margin: 10px .5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  padding: .75rem 1.5rem ;
 }
 
 footer {

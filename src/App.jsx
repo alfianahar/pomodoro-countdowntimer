@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react'
 import settingicon from './assets/cog-outline.png'
 import './App.css'
 
-function TimerControl({type, label }) {
+function TimerControl({type, label, length, setLength }) {
   return (    
       <div className="timer-control">
         <h3 id={`${type}-label`}>{label}</h3>
         <div className="plus-minus">
-          <button> - </button>
-          <span> 05 </span>
-          <button> + </button>
+          <button id={`${type}-decrement`} onClick={() => setLength(length - 1)}>-</button>
+          <span id={`${type}-length`}>{length}</span>
+          <button id={`${type}-increment`} onClick={() => setLength(length + 1)}>+</button>
         </div>
       </div>
   )
 }
 
-function PomoSetting () {
+function PomoSetting ({sessionTime, setSessionTime, breakTime, setBreakTime}) {
   return (
     <div className="pomosetting">
       <div className="setting-tittle">
@@ -23,8 +23,8 @@ function PomoSetting () {
         <span>Settings</span>
       </div>
       <div className="control">
-        <TimerControl type="break" label="Break Length" />
-        <TimerControl type="session" label="Session Length" />
+        <TimerControl type="break" label="Break Length" length={breakTime} setLength={setBreakTime}/>
+        <TimerControl type="session" label="Session Length" length={sessionTime} setLength={setSessionTime}/>
       </div>
     </div>
   )
@@ -58,12 +58,12 @@ function Clock ({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionT
   }, [seconds])
 
   return (
-    <div className="clock">
-      <h2>{now ? 'Break time' : 'Focus Session'}</h2>
+    <div className={now ? 'clock-break' : 'clock'}>
+      <h2 id="timer-label">{now ? 'Break time' : 'Focus Session'}</h2>
       <div className="clock-layout">{mins} : {secs}</div>
-      <div>
-        <button>Play</button>
-        <button>Reset</button>
+      <div className="start-stop">
+        <button id="start_stop" >{now ? 'Pause' : 'Play'}</button>
+        <button id="reset">Reset</button>
       </div>
     </div>
   )
@@ -72,7 +72,7 @@ function Clock ({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionT
 function Pomodoro({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionTime, setSessionTime, breakTime, setBreakTime}) {
   return (
     <div className="pomodoro">
-      <PomoSetting />
+      <PomoSetting sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime}/>
       <Clock minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds} now={now} setNow={setNow} sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime}/>
     </div>
   )
