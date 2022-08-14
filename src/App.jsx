@@ -30,7 +30,10 @@ function PomoSetting ({sessionTime, setSessionTime, breakTime, setBreakTime}) {
   )
 }
 
-function Clock ({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionTime, setSessionTime, breakTime, setBreakTime, play, setPlay}) {
+function Clock ({now, setNow, sessionTime, setSessionTime, breakTime, setBreakTime, displayTime, setdisplayTime, play, setPlay}) {
+  const minutes = Math.floor(displayTime / 60)
+  const seconds = displayTime - (minutes * 60)
+  
   const mins = minutes < 10 ? `0${minutes}` : minutes;
   const secs = seconds < 10 ? `0${seconds}` : seconds;
 
@@ -38,27 +41,28 @@ function Clock ({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionT
     let interval = setInterval(() => {
       clearInterval(interval);
 
-      if (play) {
-        if (seconds === 0) {
-          if (minutes !== 0) {
-            setSeconds(59)
-            setMinutes(minutes - 1)
-          } else {
-            let minutes = now ? sessionTime - 1 : breakTime - 1;
-            let seconds = 59;
-  
-            setSeconds(seconds);
-            setMinutes(minutes);
-            setNow(!now);
-          }
-        } else {
-          setSeconds(seconds - 1)
-        }
+      if  (displayTime && play) {
+        setdisplayTime(displayTime-1)
       }
+
+        // if (seconds === 0 && play) {
+        //   if (minutes !== 0 ) {
+        //     seconds = Number(59)
+        //     minutes - 1
+            
+        //   } else {
+        //     // let minutes = now ? sessionTime - 1 : breakTime - 1;
+        //     // let seconds = 59;
+            
+        //     // setNow(!now);
+        //   }
+        // } else {
+        //     seconds - 1
+        // }
 
 
     }, 1000)
-  }, [seconds, play])
+  }, [play, displayTime])
 
   return (
     <div className={now ? 'clock-break' : 'clock'}>
@@ -72,29 +76,28 @@ function Clock ({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionT
   )
 }
 
-function Pomodoro({minutes, setMinutes, seconds, setSeconds, now, setNow, sessionTime, setSessionTime, breakTime, setBreakTime, play, setPlay}) {
+function Pomodoro({now, setNow, sessionTime, setSessionTime, breakTime, setBreakTime, play, setPlay}) {
   return (
     <div className="pomodoro">
       <PomoSetting sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime}/>
-      <Clock minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds} now={now} setNow={setNow} sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime} play={play} setPlay={setPlay}/>
+      <Clock now={now} setNow={setNow} sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime} play={play} setPlay={setPlay}/>
     </div>
   )
 }
 
 
 function App() {
-  const [minutes, setMinutes] = useState(25)
-  const [seconds, setSeconds] = useState(0)
   const [now, setNow] = useState(false)
   const [sessionTime, setSessionTime] = useState(25)
   const [breakTime, setBreakTime] = useState(5)
+  const [displayTime, setdisplayTime] = useState(1500)
   const [play, setPlay] = useState(false)
 
 
   return (
     <div className="App">
       <h1>Pomodoro Timer</h1>
-      <Pomodoro minutes={minutes} setMinutes={setMinutes} seconds={seconds} setSeconds={setSeconds} now={now} setNow={setNow} sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime} play={play} setPlay={setPlay}  />
+      <Pomodoro now={now} setNow={setNow} sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime} displayTime={displayTime} setdisplayTime={setdisplayTime} play={play} setPlay={setPlay}  />
 
       <footer className="credit">
         <p className="">
