@@ -2,21 +2,23 @@ import { useEffect, useState } from 'react'
 import settingicon from './assets/cog-outline.png'
 import './App.css'
 
-function TimerControl({type, label, length, setLength }) {
+function TimerControl({type, label, length, setLength, displayTime, setDisplayTime, play }) {
   return (    
       <div className="timer-control">
         <h3 id={`${type}-label`}>{label}</h3>
         <div className="plus-minus">
-          <button id={`${type}-decrement`} onClick={() => {
+          <button disabled={play} id={`${type}-decrement`} onClick={() => {
             if (length > 1) {
               setLength(length - 1)
+              setDisplayTime(displayTime - 60)
             }
 
           }}>-</button>
           <span id={`${type}-length`}>{length}</span>
-          <button id={`${type}-increment`} onClick={() => {
+          <button disabled={play} id={`${type}-increment`} onClick={() => {
             if (length < 60) {
               setLength(length + 1)
+              setDisplayTime(displayTime + 60)
             }
           }}>+</button>
         </div>
@@ -24,7 +26,7 @@ function TimerControl({type, label, length, setLength }) {
   )
 }
 
-function PomoSetting ({sessionTime, setSessionTime, breakTime, setBreakTime}) {
+function PomoSetting ({sessionTime, setSessionTime, breakTime, setBreakTime, displayTime, setDisplayTime, play}) {
   return (
     <div className="pomosetting">
       <div className="setting-tittle">
@@ -32,8 +34,8 @@ function PomoSetting ({sessionTime, setSessionTime, breakTime, setBreakTime}) {
         <span>Settings</span>
       </div>
       <div className="control">
-        <TimerControl type="break" label="Break Length" length={breakTime} setLength={setBreakTime}/>
-        <TimerControl type="session" label="Session Length" length={sessionTime} setLength={setSessionTime}/>
+        <TimerControl type="break" label="Break Length" length={breakTime} setLength={setBreakTime} play={play}/>
+        <TimerControl type="session" label="Session Length" length={sessionTime} setLength={setSessionTime} play={play} displayTime={displayTime} setDisplayTime={setDisplayTime}/>
       </div>
     </div>
   )
@@ -49,6 +51,7 @@ function Clock ({now, setNow, sessionTime, setSessionTime, breakTime, setBreakTi
   const countdown = setTimeout(() => {
     if (displayTime && play) {
       setDisplayTime(displayTime - 1)
+      console.log(displayTime)
     }
   }, 1000)
 
@@ -66,7 +69,19 @@ function Clock ({now, setNow, sessionTime, setSessionTime, breakTime, setBreakTi
 
   const timerCount = () => {
     if (play) {
-      countdown
+      countdown;
+      const audio = document.getElementById("beep");
+      if(!displayTime && now === false ){
+        setDisplayTime(breakTime * 60)
+        setNow(!now);
+        audio.play()
+      }
+      if(!displayTime && now === true){
+        setDisplayTime(sessionTime * 60)
+        setNow(!now);
+        audio.pause()
+        audio.currentTime = 0;
+      }
     } else {
       clearTimeout(countdown)
     }
@@ -80,7 +95,7 @@ function Clock ({now, setNow, sessionTime, setSessionTime, breakTime, setBreakTi
   return (
     <div className={now ? 'clock-break' : 'clock'}>
       <h2 id="timer-label">{now ? 'Break time' : 'Focus Session'}</h2>
-      <div id="time-left" className="clock-layout">{mins} : {secs}</div>
+      <div className="clock-layout">{mins} : {secs}</div>
       <div className="start-stop">
         <button id="start_stop" onClick={() => {clearTimeout(countdown); setPlay(!play);}}>{play ? 'Pause' : 'Play'}</button>
         <button id="reset" onClick={handleReset}>Reset</button>
@@ -92,7 +107,7 @@ function Clock ({now, setNow, sessionTime, setSessionTime, breakTime, setBreakTi
 function Pomodoro({now, setNow, sessionTime, setSessionTime, breakTime, setBreakTime, displayTime, setDisplayTime, play, setPlay}) {
   return (
     <div className="pomodoro">
-      <PomoSetting sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime}/>
+      <PomoSetting sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime} displayTime={displayTime} setDisplayTime={setDisplayTime} play={play} />
       <Clock now={now} setNow={setNow} sessionTime={sessionTime} setSessionTime={setSessionTime} breakTime={breakTime} setBreakTime={setBreakTime} displayTime={displayTime} setDisplayTime={setDisplayTime} play={play} setPlay={setPlay}/>
     </div>
   )
