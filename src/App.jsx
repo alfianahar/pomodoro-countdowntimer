@@ -2,26 +2,74 @@ import { useEffect, useState } from 'react'
 import settingicon from './assets/cog-outline.png'
 import './App.css'
 
+{/* <div className="timer-control">
+            <h3 id='break-label'>Break Length</h3>
+            <div className="plus-minus">
+              <button id='break-decrement' onClick={() => {
+                if (!play) {
+                  if (breakTime > 1) {
+                    setBreakTime(prev => prev > 1 ? prev - 1 : 1)
+                  }
+                }
+              }}>-</button>
+              <span id='break-length'>{breakTime}</span>
+              <button id='break-increment' onClick={() => {
+                if (!play) {
+                  if (breakTime < 60) {
+                    setBreakTime(prev => prev < 60 ? prev + 1 : 60)
+                  }
+                }
+              }}>+</button>
+            </div>
+          </div>
+          
+          <div className="timer-control">
+            <h3 id='session-label'>Session Length</h3>
+            <div className="plus-minus">
+              <button id='session-decrement' onClick={() => {
+                if (!play) {
+                  if (sessionTime >= 1) {
+                    setSessionTime(prev => prev > 1 ? prev - 1 : 1)
+                    setDisplayTime(prev => prev > 60 ? prev - 60 : 60)
+                  }
+                }
+              }}>-</button>
+              <span id='session-length'>{sessionTime}</span>
+              <button id='session-increment' onClick={() => {
+                if (!play) {
+                  if (sessionTime < 60) {
+                    setSessionTime(prev => prev < 60 ? prev + 1 : 60)
+                    setDisplayTime(prev => prev < 3600 ? prev + 60 : 3600)
+                  }
+                }
+              }}>+</button>
+            </div>
+          </div> */}
+
 function TimerControl({type, label, length, setLength, displayTime, setDisplayTime, play }) {
   return (    
       <div className="timer-control">
         <h3 id={`${type}-label`}>{label}</h3>
         <div className="plus-minus">
-          <button disabled={play} id={`${type}-decrement`} onClick={() => {
-            if (length > 1 && type === 'session') {
-              setLength(prev => prev > 1 ? prev - 1 : prev)
-              setDisplayTime(prev => prev > 60 ? prev - 60 : prev)
-            } else if (length > 1) {
-              setLength(prev => prev > 1 ? prev - 1 : prev)
+          <button id={`${type}-decrement`} onClick={() => {
+            if (!play) {
+              if (length >= 1 && type == 'session') {
+                setLength(prev => prev > 1 ? prev - 1 : 1)
+                setDisplayTime(prev => prev > 60 ? prev - 60 : 60)
+              } else if (length > 1) {
+                setLength(prev => prev > 1 ? prev - 1 : 1)
+              }
             }
           }}>-</button>
           <span id={`${type}-length`}>{length}</span>
-          <button disabled={play} id={`${type}-increment`} onClick={() => {
-            if (length < 60 && type === 'session') {
-              setLength(prev => prev < 60 ? prev + 1 : prev)
-              setDisplayTime(prev => prev < 3600 ? prev + 60 : prev)
-            } else if (length < 60) {
-              setLength(prev => prev < 60 ? prev + 1 : prev)
+          <button id={`${type}-increment`} onClick={() => {
+            if (!play) {
+              if (length < 60 && type == 'session') {
+                setLength(prev => prev < 60 ? prev + 1 : 60)
+                setDisplayTime(prev => prev < 3600 ? prev + 60 : 3600)
+              } else if (length < 60) {
+                setLength(prev => prev < 60 ? prev + 1 : 60)
+              }
             }
           }}>+</button>
         </div>
@@ -37,15 +85,38 @@ function App() {
   const [play, setPlay] = useState(false)
   const [style, setStyle] = useState(false)
   
-  // const audio = document.getElementById("beep");
-  //   if (!displayTime && now === false ){
+  const audio = document.getElementById("beep");
+
+  // else if (play && displayTime == 0 && now == 'Session' ) {
+  //   const interval = setInterval(() => {
+  //     setDisplayTime(prev => prev * 60)
+  //     setNow('Break');
+  //     setStyle(!style)
+  //     audio.play()        
+  //   }, 1000)
+  //   return () => clearInterval(interval)
+  //   } else if (play && displayTime == 0 && now == 'Break'){
+  //     const interval = setInterval(() => {
+  //       setDisplayTime(prev => prev * 60)
+  //       setNow('Session');
+  //       setStyle(!style)
+  //       audio.pause()
+  //       audio.currentTime = 0;
+  //     }, 1000)
+  //     return () => clearInterval(interval)
+  //   }
+   
+
+  //   if (displayTime <= 0 && now === 'session' ){
   //       setDisplayTime(breakTime * 60)
-  //       setNow(!now);
+  //       setNow('break');
+  //       setStyle(!style)
   //       audio.play()
   //     }
-  //   if (!displayTime && now === true){
+  //   if (displayTime <= 0 && now === 'break'){
   //     setDisplayTime(sessionTime * 60)
-  //     setNow(!now);
+  //     setNow('session');
+  //     setStyle(!style)
   //     audio.pause()
   //     audio.currentTime = 0;
   // }
@@ -53,11 +124,14 @@ function App() {
       if (play && displayTime > 0) {
         const interval = setInterval(() => setDisplayTime(prev => prev - 1), 1000)
         return () => clearInterval(interval)
-      }
+        
+      } 
+
     }, [play, displayTime])
     
     const handleReset = () => {
       setPlay(false);
+      setStyle(false)
       setDisplayTime(1500);
       setBreakTime(5);
       setSessionTime(25);
@@ -83,8 +157,8 @@ function App() {
           <img src={settingicon} className="icon-setting" alt="setting" width="24" />
           <span>Settings</span>
         </div>
-        <div className="control">
-          <TimerControl type="break" label="Break Length" length={breakTime} setLength={setBreakTime} play={play}/>
+        <div className="control">         
+          <TimerControl type="break" label="Break Length" length={breakTime} setLength={setBreakTime} play={play} setDisplayTime={setDisplayTime}/>
           <TimerControl type="session" label="Session Length" length={sessionTime} setLength={setSessionTime} play={play} displayTime={displayTime} setDisplayTime={setDisplayTime}/>
         </div>
       </div>
@@ -110,7 +184,7 @@ function App() {
       id="beep" 
       preload="auto"
       src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
-    />      
+      />      
     </div>
   )
 }

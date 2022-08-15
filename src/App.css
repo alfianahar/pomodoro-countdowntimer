@@ -124,6 +124,7 @@ h2, h3 {
 
 .start-stop button {
   background-color: #19323C;
+  width: 6rem;
   color: antiquewhite;
   font-weight: 600;
   font-size: .9rem;
