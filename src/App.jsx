@@ -9,19 +9,19 @@ function TimerControl({type, label, length, setLength, displayTime, setDisplayTi
         <div className="plus-minus">
           <button disabled={play} id={`${type}-decrement`} onClick={() => {
             if (length > 1 && type === 'session') {
-              setLength(prev => prev - 1)
-              setDisplayTime(prev => prev - 60)
+              setLength(prev => prev > 1 ? prev - 1 : prev)
+              setDisplayTime(prev => prev > 60 ? prev - 60 : prev)
             } else if (length > 1) {
-              setLength(prev => prev - 1)
+              setLength(prev => prev > 1 ? prev - 1 : prev)
             }
           }}>-</button>
           <span id={`${type}-length`}>{length}</span>
           <button disabled={play} id={`${type}-increment`} onClick={() => {
             if (length < 60 && type === 'session') {
-              setLength(prev => prev + 1)
-              setDisplayTime(prev => prev + 60)
+              setLength(prev => prev < 60 ? prev + 1 : prev)
+              setDisplayTime(prev => prev < 3600 ? prev + 60 : prev)
             } else if (length < 60) {
-              setLength(prev => prev + 1)
+              setLength(prev => prev < 60 ? prev + 1 : prev)
             }
           }}>+</button>
         </div>
@@ -90,7 +90,7 @@ function App() {
       </div>
       <div className={style ? 'clock-break' : 'clock'}>
         <h2 id="timer-label">{now}</h2>
-        <div id="timer-left" className="clock-layout">{timeFormatter(displayTime)}</div>
+        <div id="time-left" className="clock-layout">{timeFormatter(displayTime)}</div>
         <div className="start-stop">
           <button id="start_stop" onClick={() => setPlay(!play)}>{play ? 'Pause' : 'Play'}</button>
           <button id="reset" onClick={handleReset}>Reset</button>
