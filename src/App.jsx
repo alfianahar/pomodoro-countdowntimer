@@ -87,24 +87,7 @@ function App() {
   
   const audio = document.getElementById("beep");
 
-  // else if (play && displayTime == 0 && now == 'Session' ) {
-  //   const interval = setInterval(() => {
-  //     setDisplayTime(prev => prev * 60)
-  //     setNow('Break');
-  //     setStyle(!style)
-  //     audio.play()        
-  //   }, 1000)
-  //   return () => clearInterval(interval)
-  //   } else if (play && displayTime == 0 && now == 'Break'){
-  //     const interval = setInterval(() => {
-  //       setDisplayTime(prev => prev * 60)
-  //       setNow('Session');
-  //       setStyle(!style)
-  //       audio.pause()
-  //       audio.currentTime = 0;
-  //     }, 1000)
-  //     return () => clearInterval(interval)
-  //   }
+
    
 
   //   if (displayTime <= 0 && now === 'session' ){
@@ -124,8 +107,24 @@ function App() {
       if (play && displayTime > 0) {
         const interval = setInterval(() => setDisplayTime(prev => prev - 1), 1000)
         return () => clearInterval(interval)
-        
-      } 
+      } else if (play && displayTime == 0 && now == 'Session' ) {
+        const interval = setInterval(() => {
+          setDisplayTime(prev => prev * 60)
+          setNow('Break');
+          setStyle(!style)
+          audio.play()        
+        }, 1000)
+        return () => clearInterval(interval)
+      } else if (play && displayTime == 0 && now == 'Break'){
+        const interval = setInterval(() => {
+          setDisplayTime(prev => prev * 60)
+          setNow('Session');
+          setStyle(!style)
+          audio.pause()
+          audio.currentTime = 0;
+        }, 1000)
+        return () => clearInterval(interval)
+      }
 
     }, [play, displayTime])
     
